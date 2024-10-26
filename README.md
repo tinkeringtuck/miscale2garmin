@@ -59,21 +59,20 @@
 - Miscale and Omron modules can be activated individually or run together:
 ```
 $ /home/robert/export2garmin-master/import_data.sh
-Export 2 Garmin Connect v1.6 (import_data.sh)
+Export 2 Garmin Connect v1.7 (import_data.sh)
 
 18.07.2024-16:56:01 SYSTEM * BLE device enabled in export2garmin.cfg, check if available
-18.07.2024-16:56:01 SYSTEM * BLE device hci0 working, go to modules
+18.07.2024-16:56:01 SYSTEM * BLE device hci0 working, check if temp.log exists
+18.07.2024-16:56:01 SYSTEM * temp.log file exists, go to modules
 18.07.2024-16:56:01 MISCALE * Module is on
-18.07.2024-16:56:01 MISCALE * miscale_backup.csv file exists, check if temp.log exists
-18.07.2024-16:56:01 MISCALE * temp.log file exists, checking for new data
+18.07.2024-16:56:01 MISCALE * miscale_backup.csv file exists, checking for new data
 18.07.2024-16:56:01 MISCALE * Importing data from a BLE scanner
 18.07.2024-16:56:06 MISCALE * Saving import 1721314589 to miscale_backup.csv file
 18.07.2024-16:56:07 MISCALE * Calculating data from import 1721314589, upload to Garmin Connect
 18.07.2024-16:56:07 MISCALE * Data upload to Garmin Connect is complete
 18.07.2024-16:56:07 MISCALE * Saving calculated data from import 1721314589 to miscale_backup.csv file
 18.07.2024-16:56:07 OMRON * Module is on
-18.07.2024-16:56:07 OMRON * omron_backup.csv file exists, check if temp.log exists
-18.07.2024-16:56:07 OMRON * temp.log file exists, checking for new data
+18.07.2024-16:56:07 OMRON * omron_backup.csv file exists, checking for new data
 18.07.2024-16:56:07 OMRON * Importing data from a BLE scanner
 18.07.2024-16:56:39 OMRON * Prepare data for omron_backup.csv file
 18.07.2024-16:56:40 OMRON * Data from import 1721314552 upload to Garmin Connect

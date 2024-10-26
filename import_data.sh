@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Version Info
-echo "Export 2 Garmin Connect v1.6 (import_data.sh)"
+echo "Export 2 Garmin Connect v1.7 (import_data.sh)"
 echo ""
 
 # Blocking multiple instances of same script process
@@ -27,9 +27,6 @@ i=0
 while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 	((i++))
 
-	# Cleaning temp.log file after last startup
-	[[ -s /dev/shm/temp.log ]] && > /dev/shm/temp.log
-
 	# Verifying correct working of BLE, restart bluetooth service and device via miscale_ble.py
 	if [[ $switch_miscale == "on" && $switch_mqtt == "off" ]] || [[ $switch_omron == "on" ]] ; then
 		echo "$(timenow) SYSTEM * BLE device enabled in export2garmin.cfg, check if available"
@@ -39,16 +36,26 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		if echo $ble_check | grep -q "restarting" ; then
 			ble_check=$(python3 -B $path/miscale/miscale_ble.py)
 			if echo $ble_check | grep -q "restarting" ; then
-				echo "$(timenow) SYSTEM * BLE device hci$miscale_ble_hci not working, skip scanning go to modules"
+				echo "$(timenow) SYSTEM * BLE device hci$miscale_ble_hci not working, skip scanning check if temp.log exists"
 			else
-				echo "$(timenow) SYSTEM * BLE device hci$miscale_ble_hci working, go to modules"
+				echo "$(timenow) SYSTEM * BLE device hci$miscale_ble_hci working, check if temp.log exists"
 				ble_status=ok
 			fi
 		else
-			echo "$(timenow) SYSTEM * BLE device hci$miscale_ble_hci working, go to modules"
+			echo "$(timenow) SYSTEM * BLE device hci$miscale_ble_hci working, check if temp.log exists"
 			ble_status=ok
 		fi
-	else "$(timenow) SYSTEM * BLE device not enabled or incorrect configuration in export2garmin.cfg, go to modules"
+	else "$(timenow) SYSTEM * BLE device not enabled or incorrect configuration in export2garmin.cfg, check if temp.log exists"
+	fi
+	
+	# Create temp.log file if it exists cleanup after last startup
+	if [[ $switch_miscale == "on" ]] || [[ $switch_omron == "on" ]] ; then
+		if [[ ! -f /dev/shm/temp.log ]] ; then
+			echo "$(timenow) SYSTEM * Creating temp.log file, go to modules"
+			echo > /dev/shm/temp.log
+		else echo "$(timenow) SYSTEM * temp.log file exists, go to modules"
+		fi
+		[[ -s /dev/shm/temp.log ]] && > /dev/shm/temp.log
 	fi
 
 	# Mi Body Composition Scale 2
@@ -56,18 +63,13 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		miscale_backup=$path/user/miscale_backup.csv
 		echo "$(timenow) MISCALE * Module is on"
 
-		# Creating miscale_backup.csv and temp.log file
+		# Creating miscale_backup.csv file
 		if [[ ! -f $miscale_backup ]] ; then
 			miscale_header="Data Status;Unix Time;Date [dd.mm.yyyy];Time [hh:mm:ss];Weight [kg];Change [kg];BMI;Body Fat [%];Skeletal Muscle Mass [kg];Bone Mass [kg];Body Water [%];Physique Rating;Visceral Fat;Metabolic Age [years];BMR [kCal];LBM [kg];Ideal Wieght [kg];Fat Mass To Ideal [type:mass kg];Protein [%];Impedance;Login e-mail;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]"
 			[[ $switch_mqtt == "on" ]] && miscale_header="$miscale_header;Battery [V];Battery [%]"
-			echo "$(timenow) MISCALE * Creating miscale_backup.csv file, check if temp.log exists"
+			echo "$(timenow) MISCALE * Creating miscale_backup.csv file, checking for new data"
 			echo $miscale_header > $miscale_backup
-		else echo "$(timenow) MISCALE * miscale_backup.csv file exists, check if temp.log exists"
-		fi
-		if [[ ! -f /dev/shm/temp.log ]] ; then
-			echo "$(timenow) MISCALE * Creating temp.log file, checking for new data"
-			echo > /dev/shm/temp.log
-		else echo "$(timenow) MISCALE * temp.log file exists, checking for new data"
+		else echo "$(timenow) MISCALE * miscale_backup.csv file exists, checking for new data"
 		fi
 
 		# Importing raw data from source (BLE or MQTT)
@@ -171,16 +173,11 @@ while [[ $loop_count -eq 0 ]] || [[ $i -lt $loop_count ]] ; do
 		omron_backup=$path/user/omron_backup.csv
 		echo "$(timenow) OMRON * Module is on"
 
-		# Creating omron_backup.csv and temp.log file
+		# Creating omron_backup.csv file
 		if [[ ! -f $omron_backup ]] ; then
 			echo "Data Status;Unix Time;Email User;Date [dd.mm.yyyy];Time [hh:mm:ss];SYStolic [mmHg];DIAstolic [mmHg];Heart Rate [bpm];MOV;IHB;Upload Date [dd.mm.yyyy];Upload Time [hh:mm:ss];Difference Time [s]" > $omron_backup
-			echo "$(timenow) OMRON * Creating omron_backup.csv file, check if temp.log exists"
-		else echo "$(timenow) OMRON * omron_backup.csv file exists, check if temp.log exists"
-		fi
-		if [[ ! -f /dev/shm/temp.log ]] ; then
-			echo "$(timenow) OMRON * Creating temp.log file, checking for new data"
-			echo > /dev/shm/temp.log
-		else echo "$(timenow) OMRON * temp.log file exists, checking for new data"
+			echo "$(timenow) OMRON * Creating omron_backup.csv file, checking for new data"
+		else echo "$(timenow) OMRON * omron_backup.csv file exists, checking for new data"
 		fi
 
 		# Importing raw data from source (BLE)

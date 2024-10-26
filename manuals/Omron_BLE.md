@@ -51,14 +51,14 @@ Export 2 Garmin Connect v1.0 (import_tokens.py)
 - Script "import_data.sh" has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ /home/robert/export2garmin-master/import_data.sh
-Export 2 Garmin Connect v1.6 (import_data.sh)
+Export 2 Garmin Connect v1.7 (import_data.sh)
 
 17.07.2024-17:47:36 SYSTEM * BLE device enabled in export2garmin.cfg, check if available
-17.07.2024-17:47:36 SYSTEM * BLE device hci0 working, go to modules
+17.07.2024-17:47:36 SYSTEM * BLE device hci0 working, check if temp.log exists
+17.07.2024-17:47:36 SYSTEM * temp.log file exists, go to modules
 17.07.2024-17:47:36 MISCALE * Module is off
 17.07.2024-17:47:36 OMRON * Module is on
-17.07.2024-17:47:36 OMRON * omron_backup.csv file exists, check if temp.log exists
-17.07.2024-17:47:36 OMRON * temp.log file exists, checking for new data
+17.07.2024-17:47:36 OMRON * omron_backup.csv file exists, checking for new data
 17.07.2024-17:47:36 OMRON * Importing data from a BLE scanner
 17.07.2024-17:47:48 OMRON * Prepare data for omron_backup.csv file
 17.07.2024-17:47:49 OMRON * Data from import 1721231144 upload to Garmin Connect
