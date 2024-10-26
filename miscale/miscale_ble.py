@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from bluepy import btle
 
 # Version Info
-print("Export 2 Garmin Connect v1.6 (miscale_ble.py)")
+print("Export 2 Garmin Connect v1.7 (miscale_ble.py)")
 print("")
 
 # Importing bluetooth variables from a file
@@ -51,7 +51,8 @@ class miScale(btle.DefaultDelegate):
 
         # Verifying correct working of BLE device
         if not os.popen(f"hcitool dev | awk '/hci{miscale_ble_hci}/ {{print $2}}'").read():
-            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE device hci{miscale_ble_hci} not detected, restarting bluetooth service")
+            print(f"{dt.now().strftime('%d.%m.%Y-%H:%M:%S')} * BLE device hci{miscale_ble_hci} not detected, restarting bluetooth")
+            os.system("sudo modprobe btusb")
             os.system("sudo systemctl restart bluetooth.service")
         else:
             while True:

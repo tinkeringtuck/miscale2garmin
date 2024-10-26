@@ -46,7 +46,7 @@ $ sudo setcap 'cap_net_raw,cap_net_admin+eip' /usr/local/lib/python3.11/dist-pac
 - Script `miscale/miscale_ble.py` has implemented debug mode, you can verify if everything is working properly, just execute it from console:
 ```
 $ python3 /home/robert/export2garmin-master/miscale/miscale_ble.py
-Export 2 Garmin Connect v1.6 (miscale_ble.py)
+Export 2 Garmin Connect v1.7 (miscale_ble.py)
 
 18.11.2023-23:23:30 * Starting BLE scan:
   BLE device found with address: 3f:f1:3e:a6:4d:00, non-target device
